@@ -1,0 +1,29 @@
+version: 3
+
+dotenv: ['.env']
+
+vars:
+  APP_NAME: Gui
+  ARCH: linux-amd64
+  BUILD_DIR: build
+
+tasks:
+  default:
+    desc: Список задач
+    cmds:
+      - task --list
+
+  run:
+    desc: Запуск собранного проекта
+    cmds:
+      - ./{{.BUILD_DIR}}/{{.ARCH}}/{{.APP_NAME}}
+
+  bundle:
+    desc: Сборка проекта на электроне
+    vars:
+      VENDOR_DIR: vendor
+    cmds:
+      - rm -rf {{.VENDOR_DIR}} 
+      - go mod tidy
+      - go mod vendor
+      - astilectron-bundler -o {{.BUILD_DIR}}
